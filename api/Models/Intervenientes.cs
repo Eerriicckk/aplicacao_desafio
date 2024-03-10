@@ -9,7 +9,7 @@ namespace api.Models
 
         [Key]
         [Column("ID")]
-        public int ID { get; set; }
+        public int ID { get; set; } 
 
         [Column("Exportador")]
         [StringLength(maximumLength: 45)]
