@@ -1,0 +1,131 @@
+﻿@model IEnumerable<api.Models.Intervenientes>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Exportador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataEmbarque)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrevisaoDeEmbarque)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataChegada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrevisaoDeChegada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DI)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Navio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Master)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.House)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fatura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FreteModo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Container)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanalParametrizacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Origem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destino)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiberadoParaFaturamento)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Exportador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataEmbarque)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrevisaoDeEmbarque)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataChegada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrevisaoDeChegada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Navio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Master)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.House)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fatura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FreteModo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Container)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanalParametrizacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Origem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destino)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LiberadoParaFaturamento)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

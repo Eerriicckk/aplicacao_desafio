@@ -14,7 +14,7 @@ IConfigurationBuilder confBuilder = new ConfigurationBuilder()
 IConfiguration configuration = confBuilder.Build();
 
 string connString = configuration.GetConnectionString("ConnectionStr");
-Console.WriteLine($"Log Level: {connString}");
+//Console.WriteLine($"Log Level: {connString}");
 
 //initial ctatalog cria uma database se ela nao existe.
 builder.Services.AddDbContext<Contexto>
@@ -41,6 +41,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Intervenientes}/{action=Index}/{id?}");
 
 app.Run();

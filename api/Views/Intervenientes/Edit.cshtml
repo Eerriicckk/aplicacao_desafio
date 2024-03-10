@@ -1,0 +1,114 @@
+﻿@model api.Models.Intervenientes
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Intervenientes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Exportador" class="control-label"></label>
+                <input asp-for="Exportador" class="form-control" />
+                <span asp-validation-for="Exportador" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Importador" class="control-label"></label>
+                <input asp-for="Importador" class="form-control" />
+                <span asp-validation-for="Importador" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataEmbarque" class="control-label"></label>
+                <input asp-for="DataEmbarque" class="form-control" />
+                <span asp-validation-for="DataEmbarque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrevisaoDeEmbarque" class="control-label"></label>
+                <input asp-for="PrevisaoDeEmbarque" class="form-control" />
+                <span asp-validation-for="PrevisaoDeEmbarque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataChegada" class="control-label"></label>
+                <input asp-for="DataChegada" class="form-control" />
+                <span asp-validation-for="DataChegada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrevisaoDeChegada" class="control-label"></label>
+                <input asp-for="PrevisaoDeChegada" class="form-control" />
+                <span asp-validation-for="PrevisaoDeChegada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DI" class="control-label"></label>
+                <input asp-for="DI" class="form-control" />
+                <span asp-validation-for="DI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Navio" class="control-label"></label>
+                <input asp-for="Navio" class="form-control" />
+                <span asp-validation-for="Navio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Master" class="control-label"></label>
+                <input asp-for="Master" class="form-control" />
+                <span asp-validation-for="Master" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="House" class="control-label"></label>
+                <input asp-for="House" class="form-control" />
+                <span asp-validation-for="House" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fatura" class="control-label"></label>
+                <input asp-for="Fatura" class="form-control" />
+                <span asp-validation-for="Fatura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FreteModo" class="control-label"></label>
+                <input asp-for="FreteModo" class="form-control" />
+                <span asp-validation-for="FreteModo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Container" class="control-label"></label>
+                <input asp-for="Container" class="form-control" />
+                <span asp-validation-for="Container" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CanalParametrizacao" class="control-label"></label>
+                <input asp-for="CanalParametrizacao" class="form-control" />
+                <span asp-validation-for="CanalParametrizacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Origem" class="control-label"></label>
+                <input asp-for="Origem" class="form-control" />
+                <span asp-validation-for="Origem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destino" class="control-label"></label>
+                <input asp-for="Destino" class="form-control" />
+                <span asp-validation-for="Destino" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LiberadoParaFaturamento" class="control-label"></label>
+                <input asp-for="LiberadoParaFaturamento" class="form-control" />
+                <span asp-validation-for="LiberadoParaFaturamento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
