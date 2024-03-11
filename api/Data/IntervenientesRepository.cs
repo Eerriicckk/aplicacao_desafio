@@ -32,7 +32,6 @@ namespace api.Data
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(i => i.Exportador.Contains(search) || i.Importador.Contains(search));
-                Console.WriteLine($"Log Level: {search}");
             }
 
             if(sort == "a")
