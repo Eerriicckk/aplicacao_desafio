@@ -23,8 +23,6 @@ builder.Services.AddDbContext<Contexto>
         connString,
         Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.36-mysql")));
 
-builder.Services.AddTransient<IntervenientesRepository>();
-
 var app = builder.Build();
 
 app.UseDefaultFiles();

@@ -7,7 +7,7 @@ const RemoverInterveniente = (props) => {
         if (typeof idDelete === "string") {
             idDelete = parseInt(idDelete);
         }
-        await fetch("api/IntervenientesDump/" + idDelete,
+        await fetch("api/Intervenientes/" + idDelete,
             {
                 method: 'DELETE',
                 mode: 'cors',

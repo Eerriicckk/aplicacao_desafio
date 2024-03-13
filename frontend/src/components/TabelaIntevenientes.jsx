@@ -1,23 +1,54 @@
 import { useEffect, useState } from 'react';
-import RemoverInterveniente from './RemoverInterveniente';
-import EditarInterveniente from './EditarInterveniente';
+import { AgGridReact } from 'ag-grid-react';
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import { Box, Button, ButtonGroup, ThemeProvider} from '@mui/material';
+import theme from  './CustomThemes';
 
-const TabelaIntevenientes = () => {
+const TabelaIntevenientes = ({ isActive }) => {
 
     const [intervenientes, setIntervenientes] = useState();
     const [pageNumber, setPageNumber] = useState(1);
     const [lastPage, setlastPage] = useState(1);
     const [totalReg, setTotalReg] = useState(0);
+    const [disPrevBtn, setDisPrevBtn] = useState(true);
+    const [disNextBtn, setDisNextBtn] = useState(false);
+    const [headerData, setHeaderData] = useState([
+        { field: "canalParametrizacao" },
+        { field: "container" },
+        { field: "dataChegada" },
+        { field: "dataEmbarque" },
+        { field: "destino" },
+        { field: "di" },
+        { field: "exportador" },
+        { field: "fatura" },
+        { field: "freteModo" },
+        { field: "house" },
+        { field: "importador" },
+        { field: "liberadoParaFaturamento" },
+        { field: "master" },
+        { field: "navio" },
+        { field: "origem" },
+        { field: "previsaoDeChegada" },
+        { field: "previsaoDeEmbarque" }
+    ]);
 
     useEffect(() => {
         populateIntervenienteData(pageNumber);
-    }, []);
+    }, [isActive]);
 
     const handlePageShift = async (pNewPageNumber) => {
-        if (pNewPageNumber <= 0) {
+        if (pNewPageNumber <= 1) {
             pNewPageNumber = 1;
-        }else if(pNewPageNumber > lastPage){
+            setDisPrevBtn(true);
+        } else {
+            setDisPrevBtn(false);
+        }
+        if (pNewPageNumber >= lastPage) {
+            setDisNextBtn(true);
             pNewPageNumber = lastPage;
+        } else {
+            setDisNextBtn(false);
         }
         setPageNumber(pNewPageNumber);
         populateIntervenienteData(pNewPageNumber);
@@ -25,64 +56,17 @@ const TabelaIntevenientes = () => {
     }
 
     const contents = intervenientes === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
-            <thead>
-                <tr>
-                    {/* <th>opções</th> */}
-                    <th>canalParametrizacao</th>
-                    <th>container</th>
-                    <th>dataChegada</th>
-                    <th>dataEmbarque</th>
-                    <th>destino</th>
-                    <th>di</th>
-                    <th>exportador</th>
-                    <th>fatura</th>
-                    <th>freteModo</th>
-                    <th>house</th>
-                    <th>importador</th>
-                    <th>liberadoParaFaturamento</th>
-                    <th>master</th>
-                    <th>navio</th>
-                    <th>origem</th>
-                    <th>previsaoDeChegada</th>
-                    <th>previsaoDeEmbarque</th>
-                </tr>
-            </thead>
-            <tbody>
-                {intervenientes.map(interveniente =>
-                    <tr key={interveniente.id}>
-                        {/* <td>
-                            id:{interveniente.id}
-                            <EditarInterveniente idInterv={interveniente.id} />
-                            <RemoverInterveniente idInterv={interveniente.id} />
-                        </td> */}
-                        <td>{interveniente.canalParametrizacao}</td>
-                        <td>{interveniente.container}</td>
-                        <td>{interveniente.dataChegada}</td>
-                        <td>{interveniente.dataEmbarque}</td>
-                        <td>{interveniente.destino}</td>
-                        <td>{interveniente.di}</td>
-                        <td>{interveniente.exportador}</td>
-                        <td>{interveniente.fatura}</td>
-                        <td>{interveniente.freteModo}</td>
-                        <td>{interveniente.house}</td>
-                        <td>{interveniente.importador}</td>
-                        <td>{interveniente.liberadoParaFaturamento}</td>
-                        <td>{interveniente.master}</td>
-                        <td>{interveniente.navio}</td>
-                        <td>{interveniente.origem}</td>
-                        <td>{interveniente.previsaoDeChegada}</td>
-                        <td>{interveniente.previsaoDeEmbarque}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+        ? (<p>Carregando...</p>)
+        : (
+            <div className='ag-theme-quartz' style={{ height: '500px' }}>
+                <AgGridReact rowData={intervenientes} columnDefs={headerData} />
+            </div>
+        );
     //
 
     async function populateIntervenienteData(pageNumber) {
 
-        const fetchString = 'api/IntervenientesDump/ShowInterv?page=' + pageNumber
+        const fetchString = 'api/Intervenientes/ShowInterv?page=' + pageNumber
             + '&sort=a'
             + '&fieldSort=1'
             + '&perPage=10';
@@ -96,20 +80,32 @@ const TabelaIntevenientes = () => {
     }
 
     return (
-        <div>
+        <Box>
+            {isActive ? (
+                <div>
+                    <div id="testediv">
+                        <p style={{marginTop:0}}>pagina atual: {pageNumber}</p>
+                        <p>ultima pagina: {lastPage}</p>
+                        <p>total registros: {totalReg}</p>
+                    </div>
 
-            <p>pagina atual: {pageNumber}</p>
-            <p>ultima pagina: {lastPage}</p>
-            <p>total registros: {totalReg}</p>
-            <div id="testediv">
-                <button onClick={() => handlePageShift(pageNumber - 1)}>Pag anterior</button>
-                <button onClick={() => handlePageShift(pageNumber + 1)}>Pag seguinte</button>
-            </div>
-            <div className='divTableIntervenientes'>
-                {contents}
-            </div>
-        </div>
-    )
+                    <ThemeProvider theme={theme}>
+                        <ButtonGroup variant="contained">
+                            <Button onClick={() => handlePageShift(pageNumber - 1)} color='primary' disabled={disPrevBtn}>Pag anterior</Button>
+                            <Button onClick={() => handlePageShift(pageNumber + 1)} color='secondary' disabled={disNextBtn}>Pag seguinte</Button>
+                        </ButtonGroup>
+                    </ThemeProvider>
+
+                    <div className='divTableIntervenientes'>
+                        <br />
+                        {contents}
+                    </div>
+                </div>
+            ) : (
+                <div></div>
+            )}
+
+        </Box>)
 
 }
 
