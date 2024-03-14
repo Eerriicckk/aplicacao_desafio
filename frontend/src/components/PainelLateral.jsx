@@ -91,7 +91,7 @@ const PainelLateral = ({ onChangeIndex, pageIndex }) => {
                 <Drawer open={open} onClose={() => toggleDrawer(false)}>
 
                     <Grid container spacing={0}>
-                        <Grid item xs={9}>
+                        <Grid item xxs={9}>
                             <ListItemButton sx={{ float: 'left' }} onClick={handleLogOut}><Logout sx={{transform:'scaleX(-1)'}} /> 
                             <br />
                             <Typography  variant="caption" >
@@ -100,10 +100,10 @@ const PainelLateral = ({ onChangeIndex, pageIndex }) => {
                             </ListItemButton>
                         </Grid>
 
-                        <Grid item xs={3}>
+                        <Grid item xxs={3}>
                             <ListItemButton sx={{ float: 'right' }} onClick={() => toggleDrawer(false)}><Close /></ListItemButton>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xxs={12}>
                             <Tabs value={value} onChange={handleChange} orientation="vertical">
                                 <Tab icon={<AddCircle />} iconPosition='start' label="Criar registro" onClick={() => onChangeIndex(0)} />
                                 <Tab icon={<TableChart />} iconPosition='start' label="Planilha de intervenientes" onClick={() => onChangeIndex(1)} />

@@ -297,7 +297,7 @@ const CriarInterveniente = ({ isActive, atuInfo, isAtualizacao, title, btnSubmit
                 }
             )
         }
-        
+
         alert("Dados salvos!")
     }
 
@@ -308,6 +308,11 @@ const CriarInterveniente = ({ isActive, atuInfo, isAtualizacao, title, btnSubmit
                     <h1>{title}</h1>
                     <form onSubmit={handleSubmit}>
                         <br />
+
+                        {isAtu ? <Button type="submit" variant='contained' sx={{ marginTop: "15px", marginBottom: "20px" }}>{btnSubmitText}</Button> :
+                            <div />
+                        }
+
                         <Grid container rowSpacing={1} columnSpacing={0} columns={12}>
 
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
@@ -393,7 +398,9 @@ const CriarInterveniente = ({ isActive, atuInfo, isAtualizacao, title, btnSubmit
                             </LocalizationProvider>
                         </Grid>
 
-                        <Button type="submit" variant='contained' sx={{ marginTop: "15px", marginBottom: "20px" }}>{btnSubmitText}</Button>
+                        {isAtu ? <div /> :
+                            <Button type="submit" variant='contained' sx={{ marginTop: "15px", marginBottom: "20px" }}>{btnSubmitText}</Button>
+                        }
                     </form>
                 </div >
             ) : (
