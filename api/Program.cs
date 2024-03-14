@@ -16,12 +16,13 @@ IConfiguration configuration = confBuilder.Build();
 
 #pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
 string connString = configuration.GetConnectionString("ConnectionStr");
+string mysqlVerString = configuration.GetConnectionString("MysqlVersion");
 #pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
 
 builder.Services.AddDbContext<Contexto>
     (options => options.UseMySql(
         connString,
-        Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.36-mysql")));
+        Microsoft.EntityFrameworkCore.ServerVersion.Parse(mysqlVerString)));
 
 var app = builder.Build();
 
