@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { Box, Button, ButtonGroup, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
+import { Alert, Box, Button, ButtonGroup, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import theme from './CustomThemes';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,7 +13,7 @@ import EditarInterveniente from './EditarInterveniente';
 
 const CustomButtonComponent = (props) => {
     return (
-        <EditarInterveniente regInfo={props}/>
+        <EditarInterveniente regInfo={props} />
     );
 };
 
@@ -94,6 +94,7 @@ const CustomSelect = ({ name, label, pOnChange, required, value, children }) => 
 const TabelaIntevenientes = ({ isActive, onShow }) => {
 
     const [intervenientes, setIntervenientes] = useState();
+    const [errorElement, setErrorElement] = useState(<div/>)
     const tableRef = useRef();
     // new Date(Date.now() - 1*(24*60*60*1000)) subtrai um dia da data
     const [dtInicial, setDtInicial] = useState(new Date(Date.now() - 30 * (24 * 60 * 60 * 1000)));
@@ -175,7 +176,7 @@ const TabelaIntevenientes = ({ isActive, onShow }) => {
     }, []);
 
     const contents = intervenientes === undefined
-        ? (<div></div>)
+        ? (<div/>)
         : (
             <Box>
                 <div className='ag-theme-quartz' style={{ height: tableHeight }}>
@@ -224,12 +225,25 @@ const TabelaIntevenientes = ({ isActive, onShow }) => {
             + '&sortField=' + searchField
             + '&perPage=10000';
 
-        const response = await fetch(fetchString);
-        const data = await response.json();
-        if (data.total < 10) {
-            setTableHeight((data.total * 40) + 135 + "px")
+        const response = await fetch(fetchString).catch(error => {
+            reject(error);
+            alert("hjh")
+        });
+
+        if (!response.ok) {
+            setErrorElement(<Alert variant="filled" severity="warning">Nenhum dado encontrado</Alert>);
+            setIntervenientes(undefined);
+        } else {
+
+            const data = await response.json();
+            if (data.total < 10) {
+                setTableHeight((data.total * 40) + 135 + "px")
+            }
+            setErrorElement(<div/>);
+            setIntervenientes(data.data);
         }
-        setIntervenientes(data.data);
+
+
     }
 
     return (
@@ -269,6 +283,7 @@ const TabelaIntevenientes = ({ isActive, onShow }) => {
                     <hr />
                     <div className='divTableIntervenientes'>
                         <br />
+                        {errorElement}
                         {contents}
                         <br />
                         <br />
