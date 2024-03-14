@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import React from 'react'
 
-import { Box, Drawer, Grid, List, ListItemButton, Tab, Tabs, createTheme } from '@mui/material';
-import { AddCircle, Close, Logout, TableChart, Widgets } from '@mui/icons-material';
+import { Box, Drawer, Grid, List, ListItemButton, Tab, Tabs, Typography, createTheme } from '@mui/material';
+import { AddCircle, Close, Logout, TableChart, Update, Widgets } from '@mui/icons-material';
 import theme from  './CustomThemes';
 
 
@@ -18,17 +18,24 @@ const CustomListButton = ({ onListClick, isSelected, children}) => {
                 paddingLeft: 1,
                 paddingRight: 1,
             },
+            [theme.breakpoints.up('lg')]: {
+                paddingLeft: 2,
+                paddingRight: 2,
+            },
             "&.Mui-selected": {
-                backgroundColor: "#2e8b57"
+                backgroundColor: "#3F5768"
             },
             "&.Mui-focusVisible": {
-                backgroundColor: "#2e8b57"
+                backgroundColor: "#3F5768"
             },
             ":hover": {
-                backgroundColor: "#2e8b57"
-            }
+                backgroundColor: "#336"
+            },
+            "&.Mui-selected:hover": {
+                backgroundColor: "#336"
+            },
         })}
-            theme={theme} onClick={onListClick} selected={isSelected}
+            theme={theme} onClick={onListClick} selected={isSelected} color='secondary'
         >
             {children}
         </ListItemButton>
@@ -54,7 +61,6 @@ const PainelLateral = ({ onChangeIndex, pageIndex }) => {
     }
 
     const handleLogOut = () => {
-        console.log("logout")
         localStorage.removeItem("logado");
         window.location.reload();
     }
@@ -86,7 +92,12 @@ const PainelLateral = ({ onChangeIndex, pageIndex }) => {
 
                     <Grid container spacing={0}>
                         <Grid item xs={9}>
-                            <ListItemButton sx={{ float: 'left' }} onClick={handleLogOut}><Logout sx={{transform:'scaleX(-1)'}} /></ListItemButton>
+                            <ListItemButton sx={{ float: 'left' }} onClick={handleLogOut}><Logout sx={{transform:'scaleX(-1)'}} /> 
+                            <br />
+                            <Typography  variant="caption" >
+                                Sair
+                            </Typography>
+                            </ListItemButton>
                         </Grid>
 
                         <Grid item xs={3}>
@@ -94,7 +105,7 @@ const PainelLateral = ({ onChangeIndex, pageIndex }) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Tabs value={value} onChange={handleChange} orientation="vertical">
-                                <Tab icon={<AddCircle />} iconPosition='start' label="Adicionar registro" onClick={() => onChangeIndex(0)} />
+                                <Tab icon={<AddCircle />} iconPosition='start' label="Criar registro" onClick={() => onChangeIndex(0)} />
                                 <Tab icon={<TableChart />} iconPosition='start' label="Planilha de intervenientes" onClick={() => onChangeIndex(1)} />
                             </Tabs>
                         </Grid>

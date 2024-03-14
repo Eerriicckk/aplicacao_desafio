@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, Container, TextField } from '@mui/material'
 import React, { useState } from 'react'
 
 const FormLogin = ({ isActive, isLogged }) => {
@@ -20,7 +20,7 @@ const FormLogin = ({ isActive, isLogged }) => {
     }
 
     const handlePassword = (inputEvent) => {
-        
+
         var newPwd = inputEvent.target.value.trim();
         if (!newPwd) {
             setIsErrPwd(true);
@@ -51,7 +51,7 @@ const FormLogin = ({ isActive, isLogged }) => {
         const data = await response.json();
 
         if (data[0]) {
-            if (data[0].name === name && data[0].password === password){
+            if (data[0].name === name && data[0].password === password) {
                 isLogged(true);
                 setName("");
                 setPassword("");
@@ -63,37 +63,46 @@ const FormLogin = ({ isActive, isLogged }) => {
     }
 
     return (
-        <Box>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    error={isErrName}
-                    type="text"
-                    name="name"
-                    label="Nome"
-                    size="small"
-                    variant="outlined"
-                    helperText={isErrName ? infoErr : ""}
-                    required={true}
-                    onChange={handleName} value={name}
-                />
-                <br />
-                <br />
-                <TextField
-                    error={isErrPwd}
-                    type="password"
-                    name='password'
-                    label="Senha"
-                    size="small"
-                    variant="outlined"
-                    helperText={isErrName ? infoErr : ""}
-                    required={true}
-                    onChange={handlePassword} value={password}
-                />
-                <br />
-                <br />
-                <Button type="submit" variant='contained'>Entrar</Button>
-            </form>
-        </Box>
+        <Container>
+            <Box sx={{ border:'3px solid #bfbfbf', boxShadow:'0px 10px 15px #888888', marginTop: '3em', borderRadius: '4px' }}>
+                <img src="https://idata.com.br/wp-content/uploads/2021/07/cropped-logotipo_idata-software-02-1-e1678106358607.png"
+                    alt="Logo Idata"
+                    style={{ width: "100%" }} />
+                <div style={{color:'grey'}}>
+                    <h3>Sistema de visualização de intervenientes</h3>
+                    <h3>Login</h3>
+                </div>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        error={isErrName}
+                        type="text"
+                        name="name"
+                        label="Nome"
+                        size="small"
+                        variant="outlined"
+                        helperText={isErrName ? infoErr : ""}
+                        required={true}
+                        onChange={handleName} value={name}
+                    />
+                    <br />
+                    <br />
+                    <TextField
+                        error={isErrPwd}
+                        type="password"
+                        name='password'
+                        label="Senha"
+                        size="small"
+                        variant="outlined"
+                        helperText={isErrName ? infoErr : ""}
+                        required={true}
+                        onChange={handlePassword} value={password}
+                    />
+                    <br />
+                    <br />
+                    <Button type="submit" variant='contained' sx={{ margin: '10px 0px 30px 0px' }}>Entrar</Button>
+                </form>
+            </Box>
+        </Container>
     )
 }
 

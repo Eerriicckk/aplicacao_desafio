@@ -31,27 +31,20 @@ namespace api.Controllers
         [HttpGet("ShowInterv")]
 
         public async Task<ActionResult<IEnumerable<Intervenientes>>> GetIntervenientes(
-            [FromQuery(Name = "search")] string? paramSearch,
             [FromQuery(Name = "sort")] string? paramSort,
-            [FromQuery(Name = "pagShift")] string? paramPagShift,
+            [FromQuery(Name = "sortField")] string? paramSortField,
             [FromQuery(Name = "page")] int? paramPage,
-            [FromQuery(Name = "perPage")] int? paramPerPage
-            //[FromQuery(Name = "lastId")] int? paramLastId,
-            //[FromQuery(Name = "firstId")] int? paramFirstId
+            [FromQuery(Name = "perPage")] int? paramPerPage,
+            [FromQuery(Name = "dtInicial")] DateTime paramDtIni,
+            [FromQuery(Name = "dtFinal")] DateTime paramDtFin
 
             )
         {
-            string search = string.IsNullOrEmpty(paramSearch) == true ? "" : paramSearch;
             string sort = string.IsNullOrEmpty(paramSort) == true ? "a" : paramSort;
-            string pageShift = string.IsNullOrEmpty(paramPagShift) == true ? "next" : paramPagShift;
+            string sortField = string.IsNullOrEmpty(paramSortField) == true ? "next" : paramSortField;
             int page = paramPage.GetValueOrDefault(1) == 0 ? 1 : paramPage.GetValueOrDefault(1);
             int perPage = paramPerPage.GetValueOrDefault(1) == 0 ? 10 : paramPerPage.GetValueOrDefault(1);
-            //int idIni = paramLastId.GetValueOrDefault(1) == 0 ? 0 : paramLastId.GetValueOrDefault(1);
-            
-            //if (pageShift == "prev")
-            //{
-            //    idIni = paramFirstId.GetValueOrDefault(1) == 0 ? 0 : paramFirstId.GetValueOrDefault(1);
-            //}
+
 
             var query = _context.Intervenientes.Select(
                 i => new Intervenientes
@@ -78,35 +71,43 @@ namespace api.Controllers
                 }
                 );
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(sortField))
             {
-                query = query.Where(i => i.DI.Contains(search));
+                switch (sortField)
+                {
+                    case "DataChegada":
+                        query = query.Where(i => i.DataChegada >= paramDtIni && i.DataChegada <= paramDtFin);
+                        query = query.OrderBy(i => i.DataChegada);
+                        break;
+                    case "DataEmbarque":
+                        query = query.Where(i => i.DataEmbarque >= paramDtIni && i.DataEmbarque <= paramDtFin);
+                        query = query.OrderBy(i => i.DataEmbarque);
+                        break;
+                    case "PrevisaoDeEmbarque":
+                        query = query.Where(i => i.PrevisaoDeEmbarque >= paramDtIni && i.PrevisaoDeEmbarque <= paramDtFin);
+                        query = query.OrderBy(i => i.PrevisaoDeEmbarque);
+                        break;
+                    case "PrevisaoDeChegada":
+                        query = query.Where(i => i.PrevisaoDeChegada >= paramDtIni && i.PrevisaoDeChegada <= paramDtFin);
+                        query = query.OrderBy(i => i.PrevisaoDeChegada);
+                        break;
+                    case "LiberadoParaFaturamento":
+                        query = query.Where(i => i.LiberadoParaFaturamento >= paramDtIni && i.LiberadoParaFaturamento <= paramDtFin);
+                        query = query.OrderBy(i => i.LiberadoParaFaturamento);
+                        break;
+                }
             }
-
-            //if (pageShift == "prev")
-            //{
-            //    query = query.Where(i => i.ID < idIni);
-            //    if (sort == "a")
-            //    {
-            //        sort = "d";
-            //    }
-            //    else if (sort == "d")
-            //    {
-            //        sort = "a";
-            //    }
-            //}
-            //else if(pageShift == "next")
-            //{
-            //    query = query.Where(i => i.ID > idIni);
-            //}
-
-            if (sort == "a")
+            else
             {
-                query = query.OrderBy(i => i.ID);
-            }
-            else if (sort == "d")
-            {
-                query = query.OrderByDescending(i => i.ID);
+
+                if (sort == "a")
+                {
+                    query = query.OrderBy(i => i.ID);
+                }
+                else if (sort == "d")
+                {
+                    query = query.OrderByDescending(i => i.ID);
+                }
             }
 
             var total = query.Count();
@@ -123,19 +124,6 @@ namespace api.Controllers
             }
 
             var queryEnd = query.Skip((page - 1) * perPage).Take(perPage);
-            //var queryEnd = query.Take(perPage);
-
-            //if (pageShift == "prev")
-            //{
-            //    if (sort == "a")
-            //    {
-            //        queryEnd = queryEnd.OrderByDescending(i => i.ID);
-            //    }
-            //    else if (sort == "d")
-            //    {
-            //        queryEnd = queryEnd.OrderBy(i => i.ID);
-            //    }
-            //}
 
             var data = await queryEnd.ToListAsync();
 

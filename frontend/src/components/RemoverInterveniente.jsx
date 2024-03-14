@@ -3,7 +3,6 @@ import React from 'react'
 const RemoverInterveniente = (props) => {
     const idProcess = props.idInterv;
     const handleDeletion = async (idDelete) => {
-        console.log("teste");
         if (typeof idDelete === "string") {
             idDelete = parseInt(idDelete);
         }

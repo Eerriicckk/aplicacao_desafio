@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import { ptBR } from "@mui/x-date-pickers";
 
 const theme = createTheme(
     {
@@ -15,15 +16,20 @@ const theme = createTheme(
         },
         palette: {
             primary: {
-                main: '#00cc00',
+                main: '#3F5768',
             },
             secondary: {
                 main: '#E0C2FF',
                 light: '#F5EBFF',
                 contrastText: '#47008F',
             },
+            specialColor:{
+                main: "#000000",
+                disabled: "#000000"
+            }
         }
-    }
+    },
+    ptBR,
 );
 
 export default theme

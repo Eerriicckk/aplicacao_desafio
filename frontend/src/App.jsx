@@ -22,8 +22,6 @@ const App = () => {
 		<PaginaHome/>
 	) : (
 		<Container maxWidth="xs" >
-			
-			<p>bruh</p>
 			<FormLogin isLogged={handleLogin}/>
 		</Container>
 	)

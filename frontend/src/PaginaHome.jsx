@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import CriarInterveniente from './components/CriarInterveniente';
 import TabelaIntevenientes from './components/TabelaIntevenientes';
-import { Box, Grid} from '@mui/material';
+import { Box, Grid, ThemeProvider} from '@mui/material';
 import PainelLateral from './components/PainelLateral';
 import theme from  './components/CustomThemes';
 
 function PaginaHome() {
-	const [activeIndex, setActiveIndex] = useState(0);
+	const [activeIndex, setActiveIndex] = useState(1);
 
 	function handleIndexChange(handleData) {
 		setActiveIndex(handleData);
 	};
 
 	return (
+		<ThemeProvider theme={theme}>
 		<Box sx={{ height: '100%', margin: 0 }}>
 			<Grid container spacing={0}
 				sx={(theme) => ({
 					height: '100%',
-					bgcolor: 'yellow',
 					overflow: "auto"
 				})}
 				theme={theme}>
@@ -35,13 +35,14 @@ function PaginaHome() {
 						theme={theme}
 					>
 						
-						<CriarInterveniente isActive={activeIndex === 0} onShow={() => setActiveIndex(0)} title="Criar registro" btnSubmitText="Criar Registro"/>
-						<TabelaIntevenientes isActive={activeIndex === 1} onShow={() => setActiveIndex(1)} />
+						<CriarInterveniente isActive={activeIndex === 0} title="Criar registro" btnSubmitText="Criar Registro"/>
+						<TabelaIntevenientes isActive={activeIndex === 1} onShow={setActiveIndex} />
 
 					</Box>
 				</Grid>
 			</Grid>
 		</Box>
+		</ThemeProvider>
 	);
 }
 
