@@ -1,0 +1,5 @@
+project:
+  name: erick
+  path: erick
+  containerPort: 80
+replicas: 1

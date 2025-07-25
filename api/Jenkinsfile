@@ -1,0 +1,150 @@
+pipeline{
+    agent any
+    environment {
+        VALUES_FILE = "k8s/values.yaml"
+        HELM_CMD = "microk8s helm3"
+        KUBECTL_CMD = "microk8s kubectl"
+        HELM_TEMPLATE_REPO = "https://github.com/iDATA-software/CI-HELM.git"
+        GIT_CREDENTIALS_ID = "idatagit-token"
+        CHART_PATH = "./CI-HELM"
+    }
+    options {
+        ansiColor('xterm') 
+        timestamps()
+    }
+    stages{
+         stage('Detectar Ambiente') {
+            steps {
+                script {
+                    def fullBranch = GIT_BRANCH ?: sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+                    def branchName = fullBranch.replaceFirst(/^origin\//, '')
+                    echo "Branch detectada: ${branchName}"
+
+                    switch (branchName) {
+                        case 'main':
+                            NODE_ENV = 'production'
+                            break
+                        case 'developer':
+                            NODE_ENV = 'development'
+                            break
+                        default:
+                            error("Branch '${branchName}' não é suportada.")
+                    }
+                    echo "Ambiente definido como: ${NODE_ENV}"
+                }
+            }
+        }
+         stage('Carregar Variáveis do .env') {
+            steps {
+                script {
+                    def envFile = ".env.${NODE_ENV}"
+                    echo "Carregando variáveis de ${envFile}"
+
+                    def props = readProperties file: envFile
+                    props.each { key, value ->
+                        env."${key}" = value
+                    }
+
+                    echo "Variáveis carregadas com sucesso"
+                }
+            }
+        }
+
+        stage("Carregar Configurações") {
+            steps {
+                script {
+                    def values = readYaml file: VALUES_FILE
+                     PROJECT_NAME = values.project?.name ?: error("A chave 'project.name' não foi encontrada no arquivo $VALUES_FILE")
+                     PROJECT_PATH = values.project?.path ?: error("A chave 'project.path' não foi encontrada no arquivo $VALUES_FILE")
+                }
+            }
+        }
+        
+        stage("Construindo a Docker Image"){
+            steps{
+                script {
+                    def buildConfig = NODE_ENV == 'production' ? 'Release' : 'Debug'
+                     dockerImage = docker.build("$REGISTRY_URL/$PROJECT_NAME:${env.BUILD_ID}", "--build-arg BUILD_CONFIGURATION=${buildConfig} .")
+                }
+            }
+        }
+
+        stage("Deploying da Docker Image"){
+            steps{
+                script {
+                    docker.withRegistry("http://$REGISTRY_URL", 'docker-registry-credentials') {
+                        dockerImage.push("${env.BUILD_ID}")
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+
+        stage('Prepar o Ambiente'){
+            steps {
+                script {
+                    echo "Preparando o ambiente..."
+                    sh "rm -rf ${CHART_PATH} manifests || true" 
+                }
+            }
+        }
+
+        stage('Clone Helm Template') {
+            steps {
+                script {
+                    echo "Clonando o repositório CI-HELM..."
+                     dir("${CHART_PATH}") {
+                        git branch: 'main',
+                            credentialsId: "${GIT_CREDENTIALS_ID}",
+                            url: "${HELM_TEMPLATE_REPO}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy com Helm') {
+            steps {
+                script {
+                    def envType = NODE_ENV == 'production' ? 'Production' : 'Development'
+                    echo "Implantando aplicação diretamente no cluster Kubernetes com Helm..."
+                    sh """
+                    ${HELM_CMD} upgrade --install ${PROJECT_NAME} ${CHART_PATH}/ci \
+                        --namespace idata360 \
+                        --create-namespace \
+                        --values ${VALUES_FILE} \
+                        --set image.tag=${env.BUILD_ID} \
+                        --set image.server=${REGISTRY_URL} \
+                        --set host=${HOST_URL} \
+                        --set environment=${envType} \
+                    """
+                }
+            }
+        }
+
+        stage('Verificar Implantação') {
+            steps {
+                script {
+                    echo "Verificando implantação no cluster Kubernetes..."
+                    sh "${KUBECTL_CMD} get pods -n ${PROJECT_NAME}"
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "Pipeline executado com sucesso!"
+        }
+
+        failure {
+            echo "O pipeline falhou. Verifique os logs para mais detalhes."
+        }
+
+        cleanup {
+            echo "Limpando arquivos temporários..."
+            sh "rm -rf ${CHART_PATH} || true"
+        }
+    }
+    
+}
