@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment {
-        VALUES_FILE = "k8s/values.yaml"
+        VALUES_FILE = "api/k8s/values.yaml"
         HELM_CMD = "microk8s helm3"
         KUBECTL_CMD = "microk8s kubectl"
         HELM_TEMPLATE_REPO = "https://github.com/iDATA-software/CI-HELM.git"
