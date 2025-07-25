@@ -64,7 +64,7 @@ pipeline{
             steps{
                 script {
                     def buildConfig = NODE_ENV == 'production' ? 'Release' : 'Debug'
-                     dockerImage = docker.build("$REGISTRY_URL/$PROJECT_NAME:${env.BUILD_ID}", "--build-arg BUILD_CONFIGURATION=${buildConfig} .")
+                     dockerImage = docker.build("$REGISTRY_URL/$PROJECT_NAME:${env.BUILD_ID}", "--build-arg BUILD_CONFIGURATION=${buildConfig} -f api/Dockerfile api")
                 }
             }
         }
