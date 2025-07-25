@@ -21,7 +21,7 @@ pipeline{
                     echo "Branch detectada: ${branchName}"
 
                     switch (branchName) {
-                        case 'main':
+                        case 'master':
                             NODE_ENV = 'production'
                             break
                         case 'developer':
