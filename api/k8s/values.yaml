@@ -1,5 +1,5 @@
 project:
   name: erick
   path: erick
-  containerPort: 80
+  containerPort: 8080
 replicas: 1
