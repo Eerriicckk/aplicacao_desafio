@@ -99,6 +99,21 @@ namespace api.Controllers
             return CreatedAtAction("GetUsers", new { id = users.Id }, users);
         }
 
+        [HttpPost("testePost")]
+        public async Task<ActionResult<Users>> PostUsers(Users users)
+        {
+            
+            return Ok("Operação concluída com sucesso.");
+        }
+
+        [HttpGet("testeGet")]
+        public async Task<ActionResult<Users>> PostUsers(Users users)
+        {
+            
+            return Ok("Operação concluída com sucesso.");
+        }
+
+
         //////////DELETE: api/Users/5
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> DeleteUsers(int id)
