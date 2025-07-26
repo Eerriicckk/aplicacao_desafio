@@ -100,14 +100,14 @@ namespace api.Controllers
         }
 
         [HttpPost("testePost")]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Users>> PostUsers2(Users users)
         {
             
             return Ok("Operação concluída com sucesso.");
         }
 
         [HttpGet("testeGet")]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Users>> PostUsers3(Users users)
         {
             
             return Ok("Operação concluída com sucesso.");
