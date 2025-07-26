@@ -109,7 +109,7 @@ pipeline{
                     echo "Implantando aplicação diretamente no cluster Kubernetes com Helm..."
                     sh """
                     ${HELM_CMD} upgrade --install ${PROJECT_NAME} ${CHART_PATH}/ci \
-                        --namespace erick \
+                        --namespace idata360 \
                         --create-namespace \
                         --values ${VALUES_FILE} \
                         --set image.tag=${env.BUILD_ID} \
