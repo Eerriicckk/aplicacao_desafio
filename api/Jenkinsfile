@@ -9,7 +9,6 @@ pipeline{
         CHART_PATH = "./CI-HELM"
     }
     options {
-        ansiColor('xterm') 
         timestamps()
     }
     stages{
