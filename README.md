@@ -1,4 +1,4 @@
-# projeto desafio de estágio
+# Projeto desafio de estágio
 ao baixar o projeto, abrir o arquivo <code>api\appsettings.json</code> e mudar <br/>
 <code>"ConnectionStr"</code> para:<code>"ConnectionStr": "server=servidor;initial catalog=nome da database;uid=usuario;pwd=senha"</code>
 <br/>
